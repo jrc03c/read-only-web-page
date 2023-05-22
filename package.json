@@ -1,4 +1,9 @@
 {
+  "name": "read-only-web-page",
+  "author": "jrc03c",
+  "version": "0.0.1",
+  "license": "ISC",
+  "main": "standalone.min.js",
   "scripts": {
     "build-standalone": "esbuild standalone.js --outfile=standalone.min.js --minify",
     "watch-standalone": "esbuild standalone.js --outfile=standalone.min.js --minify --watch"
