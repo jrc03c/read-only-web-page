@@ -230,13 +230,14 @@
       el.addEventListener(eventName, ignore, true)
     })
 
-    el.setAttribute("disabled", true)
+    // el.setAttribute("disabled", "")
+    el.setAttribute("readonly", "")
     return el
   }
 
   function getAllElements(root) {
-    root = root || document.body
-    let out = []
+    root = root || document.getElementsByTagName("html")[0]
+    let out = [root]
 
     Array.from(root.children).forEach(child => {
       out = out.concat(getAllElements(child))
@@ -246,15 +247,19 @@
   }
 
   // add visible notification
-  const notification = document.createElement("div")
+  const shouldShowNotification = true
 
-  notification.style = `position: fixed; left: 0; top: 0; width: 100vw; min-width: 100vw; max-width: 100vw; height: auto; min-height: auto; max-height: 100vh; overflow: hidden; background-color: yellow; color: black; padding: 1em; box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25); text-align: center; z-index: 999998;`
+  if (shouldShowNotification) {
+    const notification = document.createElement("div")
 
-  notification.innerHTML =
-    "This page is currently in read-only mode. To enable read-write mode again, just refresh the page."
+    notification.style = `position: fixed; left: 0; top: 0; width: 100vw; min-width: 100vw; max-width: 100vw; height: auto; min-height: auto; max-height: 100vh; overflow: hidden; background-color: yellow; color: black; padding: 1em; box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25); text-align: center; z-index: 999999; cursor: not-allowed; font-family: monospace; font-size: 1.25em;`
 
-  applyEventListeners(notification)
-  document.body.appendChild(notification)
+    notification.innerHTML =
+      "This page is currently in read-only mode. To enable read-write mode again, just refresh the page."
+
+    applyEventListeners(notification)
+    document.body.appendChild(notification)
+  }
 
   // put glass over notification and the rest of the viewport
   const shouldUseGlass = true
@@ -262,7 +267,7 @@
   if (shouldUseGlass) {
     const glass = document.createElement("div")
 
-    glass.style = `position: fixed; left: 0; top: 0; width: 100vw; min-width: 100vw; max-width: 100vw; height: 100vh; min-height: 100vh; max-height: 100vh; overflow: hidden; cursor: not-allowed; z-index: 999999;`
+    glass.style = `position: fixed; left: 0; top: 0; width: 100vw; min-width: 100vw; max-width: 100vw; height: 100vh; min-height: 100vh; max-height: 100vh; overflow: hidden; cursor: not-allowed; z-index: 999998; background-color: rgba(128, 128, 128, 0.1);`
 
     applyEventListeners(glass)
     document.body.appendChild(glass)
@@ -270,8 +275,8 @@
 
   setTimeout(() => {
     // add event listeners to elements
-    const elements = new Set(
-      getAllElements().map(el => applyEventListeners(el))
-    )
+    getAllElements().forEach(el => {
+      applyEventListeners(el)
+    })
   }, 10)
 })()
