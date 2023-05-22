@@ -227,36 +227,25 @@
 
   function applyEventListeners(el) {
     eventNames.forEach(eventName => {
-      el.addEventListener(eventName, ignore)
+      el.addEventListener(eventName, ignore, true)
     })
 
+    el.setAttribute("disabled", true)
     return el
   }
 
   function getAllElements(root) {
     root = root || document.body
-    let out = [root]
+    let out = []
 
     Array.from(root.children).forEach(child => {
-      getAllElements(child).forEach(descendant => {
-        out.push(descendant)
-      })
+      out = out.concat(getAllElements(child))
     })
 
     return out
   }
 
-  const elements = new Set(getAllElements().map(el => applyEventListeners(el)))
-
-  setInterval(() => {
-    const newElements = getAllElements().filter(el => !elements.has(el))
-
-    newElements.forEach(el => {
-      applyEventListeners(el)
-      elements.add(el)
-    })
-  }, 1000)
-
+  // add visible notification
   const notification = document.createElement("div")
 
   notification.style = `position: fixed; left: 0; top: 0; width: 100vw; min-width: 100vw; max-width: 100vw; height: auto; min-height: auto; max-height: 100vh; overflow: hidden; background-color: yellow; color: black; padding: 1em; box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25); text-align: center; z-index: 999998;`
@@ -267,10 +256,22 @@
   applyEventListeners(notification)
   document.body.appendChild(notification)
 
-  const glass = document.createElement("div")
+  // put glass over notification and the rest of the viewport
+  const shouldUseGlass = true
 
-  glass.style = `position: fixed; left: 0; top: 0; width: 100vw; min-width: 100vw; max-width: 100vw; height: 100vh; min-height: 100vh; max-height: 100vh; overflow: hidden; cursor: not-allowed; z-index: 999999;`
+  if (shouldUseGlass) {
+    const glass = document.createElement("div")
 
-  applyEventListeners(glass)
-  document.body.appendChild(glass)
+    glass.style = `position: fixed; left: 0; top: 0; width: 100vw; min-width: 100vw; max-width: 100vw; height: 100vh; min-height: 100vh; max-height: 100vh; overflow: hidden; cursor: not-allowed; z-index: 999999;`
+
+    applyEventListeners(glass)
+    document.body.appendChild(glass)
+  }
+
+  setTimeout(() => {
+    // add event listeners to elements
+    const elements = new Set(
+      getAllElements().map(el => applyEventListeners(el))
+    )
+  }, 10)
 })()
