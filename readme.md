@@ -12,4 +12,4 @@ Note that you can also create a bookmarklet for this tool! Just create a new boo
 
 # Caveat
 
-It's probably not hard to defeat the effects of this script. It's not meant to be 100% foolproof and secure against all possible workarounds; it's just meant to handle some particular use cases for me, especially in cases where I need to be especially careful about _not_ changing anything. The effects probably also won't be applied to iframes or shadow DOMs, but that's just a guess because I haven't tested them yet.
+It's probably not hard to defeat the effects of this script. It's not meant to be 100% foolproof and secure against all possible workarounds; it's just meant to handle some particular use cases for me, especially in cases where I need to be particularly careful about _not_ changing anything. The effects probably also won't be applied to iframes or shadow DOMs, but that's just a guess because I haven't tested them yet.
