@@ -1,0 +1,276 @@
+;(() => {
+  const eventNames = [
+    "DOMActivate",
+    "DOMContentLoaded",
+    "DOMMouseScroll",
+    "abort",
+    "activate",
+    "addstream",
+    "addtrack",
+    "afterprint",
+    "afterscriptexecute",
+    "animationcancel",
+    "animationend",
+    "animationiteration",
+    "animationstart",
+    "appinstalled",
+    "audioend",
+    "audioprocess",
+    "audiostart",
+    "auxclick",
+    "beforeinput",
+    "beforeprint",
+    "beforescriptexecute",
+    "beforeunload",
+    "beginEvent",
+    "blocked",
+    "blur",
+    "boundary",
+    "bufferedamountlow",
+    "cancel",
+    "canplay",
+    "canplaythrough",
+    "change",
+    "click",
+    "close",
+    "closing",
+    "complete",
+    "compositionend",
+    "compositionstart",
+    "compositionupdate",
+    "connect",
+    "connectionstatechange",
+    "contentdelete",
+    "contextmenu",
+    "copy",
+    "cuechange",
+    "cut",
+    "datachannel",
+    "dblclick",
+    "devicechange",
+    "devicemotion",
+    "deviceorientation",
+    "drag",
+    "dragend",
+    "dragenter",
+    "dragleave",
+    "dragover",
+    "dragstart",
+    "drop",
+    "durationchange",
+    "emptied",
+    "end",
+    "endEvent",
+    "ended",
+    "enterpictureinpicture",
+    "error",
+    "focus",
+    "focusin",
+    "focusout",
+    "formdata",
+    "fullscreenchange",
+    "fullscreenerror",
+    "gamepadconnected",
+    "gamepaddisconnected",
+    "gatheringstatechange",
+    "gesturechange",
+    "gestureend",
+    "gesturestart",
+    "gotpointercapture",
+    "hashchange",
+    "icecandidate",
+    "icecandidateerror",
+    "iceconnectionstatechange",
+    "icegatheringstatechange",
+    "input",
+    "inputsourceschange",
+    "install",
+    "invalid",
+    "keydown",
+    "keypress",
+    "keyup",
+    "languagechange",
+    "leavepictureinpicture",
+    "load",
+    "loadeddata",
+    "loadedmetadata",
+    "loadend",
+    "loadstart",
+    "lostpointercapture",
+    "mark",
+    "merchantvalidation",
+    "message",
+    "messageerror",
+    "mousedown",
+    "mouseenter",
+    "mouseleave",
+    "mousemove",
+    "mouseout",
+    "mouseover",
+    "mouseup",
+    "mousewheel",
+    "mute",
+    "negotiationneeded",
+    "nomatch",
+    "notificationclick",
+    "offline",
+    "online",
+    "open",
+    "orientationchange",
+    "pagehide",
+    "pageshow",
+    "paste",
+    "pause",
+    "payerdetailchange",
+    "paymentmethodchange",
+    "play",
+    "playing",
+    "pointercancel",
+    "pointerdown",
+    "pointerenter",
+    "pointerleave",
+    "pointerlockchange",
+    "pointerlockerror",
+    "pointermove",
+    "pointerout",
+    "pointerover",
+    "pointerup",
+    "popstate",
+    "progress",
+    "push",
+    "pushsubscriptionchange",
+    "ratechange",
+    "readystatechange",
+    "rejectionhandled",
+    "removeTrack",
+    "removestream",
+    "removetrack",
+    "repeatEvent",
+    "reset",
+    "resize",
+    "resourcetimingbufferfull",
+    "result",
+    "resume",
+    "scroll",
+    "search",
+    "seeked",
+    "seeking",
+    "select",
+    "selectedcandidatepairchange",
+    "selectend",
+    "selectionchange",
+    "selectstart",
+    "shippingaddresschange",
+    "shippingoptionchange",
+    "signalingstatechange",
+    "slotchange",
+    "soundend",
+    "soundstart",
+    "speechend",
+    "speechstart",
+    "squeeze",
+    "squeezeend",
+    "squeezestart",
+    "stalled",
+    "start",
+    "statechange",
+    "storage",
+    "submit",
+    "success",
+    "suspend",
+    "timeout",
+    "timeupdate",
+    "toggle",
+    "tonechange",
+    "touchcancel",
+    "touchend",
+    "touchmove",
+    "touchstart",
+    "track",
+    "transitioncancel",
+    "transitionend",
+    "transitionrun",
+    "transitionstart",
+    "unhandledrejection",
+    "unload",
+    "unmute",
+    "upgradeneeded",
+    "versionchange",
+    "visibilitychange",
+    "voiceschanged",
+    "volumechange",
+    "vrdisplayactivate",
+    "vrdisplayblur",
+    "vrdisplayconnect",
+    "vrdisplaydeactivate",
+    "vrdisplaydisconnect",
+    "vrdisplayfocus",
+    "vrdisplaypointerrestricted",
+    "vrdisplaypointerunrestricted",
+    "vrdisplaypresentchange",
+    "waiting",
+    "webglcontextcreationerror",
+    "webglcontextlost",
+    "webglcontextrestored",
+    "webkitmouseforcechanged",
+    "webkitmouseforcedown",
+    "webkitmouseforceup",
+    "webkitmouseforcewillbegin",
+    "wheel",
+  ]
+
+  function ignore(event) {
+    event.preventDefault()
+    event.stopPropagation()
+    event.stopImmediatePropagation()
+  }
+
+  function applyEventListeners(el) {
+    eventNames.forEach(eventName => {
+      el.addEventListener(eventName, ignore)
+    })
+
+    return el
+  }
+
+  function getAllElements(root) {
+    root = root || document.body
+    let out = [root]
+
+    Array.from(root.children).forEach(child => {
+      getAllElements(child).forEach(descendant => {
+        out.push(descendant)
+      })
+    })
+
+    return out
+  }
+
+  const elements = new Set(getAllElements().map(el => applyEventListeners(el)))
+
+  setInterval(() => {
+    const newElements = getAllElements().filter(el => !elements.has(el))
+
+    newElements.forEach(el => {
+      applyEventListeners(el)
+      elements.add(el)
+    })
+  }, 1000)
+
+  const notification = document.createElement("div")
+
+  notification.style = `position: fixed; left: 0; top: 0; width: 100vw; min-width: 100vw; max-width: 100vw; height: auto; min-height: auto; max-height: 100vh; overflow: hidden; background-color: yellow; color: black; padding: 1em; box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25); text-align: center; z-index: 999998;`
+
+  notification.innerHTML =
+    "This page is currently in read-only mode. To enable read-write mode again, just refresh the page."
+
+  applyEventListeners(notification)
+  document.body.appendChild(notification)
+
+  const glass = document.createElement("div")
+
+  glass.style = `position: fixed; left: 0; top: 0; width: 100vw; min-width: 100vw; max-width: 100vw; height: 100vh; min-height: 100vh; max-height: 100vh; overflow: hidden; cursor: not-allowed; z-index: 999999;`
+
+  applyEventListeners(glass)
+  document.body.appendChild(glass)
+})()

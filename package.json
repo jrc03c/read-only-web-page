@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build-standalone": "esbuild standalone.js --outfile=standalone.min.js --minify",
+    "watch-standalone": "esbuild standalone.js --outfile=standalone.min.js --minify --watch"
+  },
+  "devDependencies": {
+    "esbuild": "^0.17.19"
+  }
+}
