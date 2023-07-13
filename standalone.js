@@ -1,4 +1,4 @@
-;(() => {
+!(() => {
   const eventNames = [
     "DOMActivate",
     "DOMContentLoaded",
@@ -252,7 +252,28 @@
   if (shouldShowNotification) {
     const notification = document.createElement("div")
 
-    notification.style = `position: fixed; left: 0; top: 0; width: 100vw; min-width: 100vw; max-width: 100vw; height: auto; min-height: auto; max-height: 100vh; overflow: hidden; background-color: yellow; color: black; padding: 1em; box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25); text-align: center; z-index: 999999; cursor: not-allowed; font-family: monospace; font-size: 1.25em;`
+    notification.style = /* css */ `
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      box-sizing: border-box;
+      min-width: 100vw;
+      max-width: 100vw;
+      height: auto;
+      min-height: auto;
+      max-height: 100vh;
+      overflow: hidden;
+      background-color: yellow;
+      color: black;
+      padding: 1em;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      z-index: 999999;
+      cursor: not-allowed;
+      font-family: monospace;
+      font-size: 1.25em;
+    `
 
     notification.innerHTML =
       "This page is currently in read-only mode. To enable read-write mode again, just refresh the page."
